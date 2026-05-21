@@ -32,11 +32,12 @@ CalendarX has two surfaces: a static preset-feed generator for GitHub Pages and 
 ## Vercel Custom Data Flow
 
 1. The user searches companies in `public/index.html`.
-2. `/api/search` loads the current rolling Nasdaq window from `pkg/runtimecache`.
-3. Selected symbols are posted to `/api/link`.
-4. `/api/link` normalizes the symbols and returns `/api/ics/c/<token>.ics`, where `<token>` is gzip-compressed JSON encoded with raw base64url.
-5. Calendar apps request the `.ics` URL directly.
-6. `/api/ics` decodes the token, refreshes or reads the `/tmp` Nasdaq cache, filters events by symbol, and returns `text/calendar`.
+2. `/api/search` loads the current rolling Nasdaq window from `pkg/runtimecache`, then builds a selectable company universe from committed watchlists plus current-window Nasdaq rows.
+3. Empty search returns a Mega 7 starter list; exact ticker matches rank ahead of company-name contains matches.
+4. Selected symbols are stored in browser `localStorage` and posted to `/api/link`.
+5. `/api/link` normalizes the symbols and returns `/api/ics/c/<token>.ics`, where `<token>` is gzip-compressed JSON encoded with raw base64url.
+6. Calendar apps request the `.ics` URL directly.
+7. `/api/ics` decodes the token, refreshes or reads the `/tmp` Nasdaq cache, filters events by symbol, and returns `text/calendar`.
 
 ## Package Boundaries
 

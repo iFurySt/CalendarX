@@ -26,5 +26,6 @@ Keep the UI focused on the actual feed workflow. Avoid marketing-only sections; 
 - Confirm every public feed card has a copy action and a download link.
 - Confirm text wraps cleanly on narrow mobile widths.
 - Confirm `docs/index.html` uses relative links to `docs/ics/*.ics`.
-- Confirm the Vercel UI can search, add a symbol, generate a compressed subscription URL, and download `.ics`.
+- Confirm the Vercel UI can search watchlist companies even when they do not have a current-window event.
+- Confirm the Vercel UI starts with a Mega 7 available list, supports preset buttons, persists selected companies in `localStorage`, generates a compressed subscription URL, and downloads `.ics`.
 - Confirm `/api/ics/c/<token>.ics` returns `text/calendar`.

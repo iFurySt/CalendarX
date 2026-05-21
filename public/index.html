@@ -32,13 +32,13 @@
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 48px 32px 72px; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 48px 32px 72px; }
   header {
     display: grid;
     grid-template-columns: 1fr 360px;
     gap: 40px;
     align-items: end;
-    padding-bottom: 32px;
+    padding-bottom: 30px;
     border-bottom: 1.5px solid var(--g300);
   }
   .eyebrow {
@@ -55,12 +55,12 @@
   .eyebrow::before { content: ""; width: 24px; height: 1.5px; background: var(--clay); }
   h1 {
     font-family: var(--serif);
-    font-size: clamp(38px, 5vw, 62px);
+    font-size: clamp(36px, 5vw, 58px);
     font-weight: 500;
     line-height: 1.06;
     letter-spacing: 0;
     margin: 0;
-    max-width: 14ch;
+    max-width: 15ch;
   }
   h1 em { color: var(--clay); font-style: italic; }
   .status {
@@ -73,47 +73,41 @@
     color: var(--g700);
   }
   .status b { color: var(--slate); font-weight: 600; }
-  .layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr);
-    gap: 24px;
-    margin-top: 28px;
-    align-items: start;
-  }
   .panel {
     background: var(--paper);
     border: 1.5px solid var(--g300);
     border-radius: 8px;
     overflow: hidden;
+    margin-top: 26px;
   }
   .panel-head {
     display: flex;
+    gap: 14px;
     align-items: center;
-    gap: 12px;
-    padding: 15px 16px 12px;
+    padding: 18px 20px 14px;
     border-bottom: 1.5px solid var(--g100);
   }
   .panel-head h2 {
     font-family: var(--serif);
-    font-size: 22px;
+    font-size: 28px;
     font-weight: 500;
     margin: 0;
     letter-spacing: 0;
   }
   .count {
     margin-left: auto;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--g500);
-    border: 1.5px solid var(--g200);
+    border: 1.5px solid var(--g300);
     border-radius: 999px;
-    padding: 2px 8px;
+    color: var(--g500);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 4px 11px;
   }
-  .searchbar {
+  .toolbar {
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: 10px;
-    padding: 16px;
+    gap: 16px;
+    padding: 16px 20px;
     border-bottom: 1.5px solid var(--g100);
   }
   input, textarea {
@@ -123,11 +117,18 @@
     background: var(--ivory);
     color: var(--slate);
     font: inherit;
-    padding: 10px 12px;
+    padding: 12px 13px;
   }
   input:focus, textarea:focus {
     outline: 2px solid rgba(217, 119, 87, .28);
     border-color: var(--clay);
+  }
+  .quick {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 0 20px 16px;
+    border-bottom: 1.5px solid var(--g100);
   }
   button, .btn {
     border: 1.5px solid var(--g300);
@@ -144,6 +145,7 @@
     min-height: 38px;
     padding: 8px 14px;
     text-decoration: none;
+    white-space: nowrap;
   }
   button:hover, .btn:hover { border-color: var(--slate); }
   button.primary, .btn.primary {
@@ -157,15 +159,55 @@
     color: var(--g700);
     cursor: not-allowed;
   }
-  .results { padding: 8px; display: grid; gap: 8px; min-height: 240px; }
-  .result {
+  .chooser {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, .9fr);
+    min-height: 520px;
+  }
+  .available, .picked {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .available { border-right: 1.5px solid var(--g300); }
+  .list-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    min-height: 44px;
+    padding: 12px 16px 8px;
+    border-bottom: 1.5px solid var(--g100);
+  }
+  .list-head h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 21px;
+    margin: 0;
+    letter-spacing: 0;
+  }
+  .list {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    padding: 10px 12px;
+    min-height: 360px;
+    max-height: 560px;
+    overflow: auto;
+  }
+  .row {
     border: 1.5px solid var(--g200);
     border-radius: 8px;
-    padding: 11px;
+    padding: 10px 11px;
     display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 12px;
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 10px;
     align-items: center;
+  }
+  .row:hover { border-color: var(--g500); }
+  .check {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--clay);
   }
   .symbol {
     font-family: var(--mono);
@@ -173,26 +215,62 @@
     font-weight: 700;
     letter-spacing: .02em;
   }
-  .company { color: var(--g700); font-size: 13px; margin-top: 2px; }
-  .date { font-family: var(--mono); color: var(--g500); font-size: 11px; margin-top: 5px; }
-  .selected { padding: 14px; display: flex; flex-wrap: wrap; gap: 8px; min-height: 112px; }
-  .chip {
-    border: 1.5px solid var(--g300);
-    border-radius: 999px;
-    background: var(--g100);
-    display: inline-flex;
+  .company {
+    color: var(--g700);
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .date {
+    font-family: var(--mono);
+    color: var(--g500);
+    font-size: 11px;
+    margin-top: 4px;
+  }
+  .empty {
+    color: var(--g500);
+    font-size: 13px;
+    padding: 18px;
+  }
+  .pager {
+    border-top: 1.5px solid var(--g100);
+    padding: 12px 16px;
+    display: flex;
     align-items: center;
     gap: 8px;
+    justify-content: flex-end;
+  }
+  .pager span {
+    color: var(--g500);
     font-family: var(--mono);
     font-size: 12px;
-    padding: 7px 10px;
+    margin-right: auto;
   }
-  .chip button {
-    min-height: 22px;
-    min-width: 22px;
-    padding: 0;
+  .picked-list {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    padding: 10px 12px;
+    min-height: 360px;
+    max-height: 560px;
+    overflow: auto;
+  }
+  .picked-row {
+    border: 1.5px solid var(--g200);
+    border-radius: 8px;
+    padding: 10px 11px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+  }
+  .remove {
+    min-width: 34px;
+    min-height: 34px;
     border-radius: 50%;
-    border-color: var(--g300);
+    padding: 0;
+    color: var(--g500);
   }
   .actions {
     padding: 14px 16px 16px;
@@ -202,8 +280,8 @@
     flex-wrap: wrap;
   }
   .linkbox {
-    border-top: 1.5px solid var(--g100);
     padding: 14px 16px 16px;
+    border-top: 1.5px solid var(--g100);
     display: grid;
     gap: 10px;
   }
@@ -214,16 +292,12 @@
     font-family: var(--mono);
     font-size: 12px;
   }
-  .msg {
-    color: var(--g500);
-    font-size: 13px;
-    padding: 16px;
-  }
   .error { color: var(--clay-d); }
   @media (max-width: 860px) {
     .wrap { padding: 32px 20px 56px; }
-    header, .layout { grid-template-columns: 1fr; }
-    .searchbar { grid-template-columns: 1fr; }
+    header, .toolbar, .chooser { grid-template-columns: 1fr; }
+    .available { border-right: 0; border-bottom: 1.5px solid var(--g300); }
+    .list, .picked-list { max-height: 420px; }
   }
 </style>
 </head>
@@ -237,143 +311,240 @@
     <div class="status" id="status">Loading current earnings window...</div>
   </header>
 
-  <section class="layout">
-    <article class="panel">
-      <div class="panel-head">
-        <h2>Companies</h2>
-        <div class="count" id="result-count">0 results</div>
-      </div>
-      <div class="searchbar">
-        <input id="search" autocomplete="off" placeholder="Search ticker or company" aria-label="Search ticker or company">
-        <button id="manual-add" type="button">Add ticker</button>
-      </div>
-      <div class="results" id="results">
-        <div class="msg">Type a symbol or company name.</div>
-      </div>
-    </article>
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Companies</h2>
+      <div class="count" id="result-count">0 results</div>
+    </div>
+    <div class="toolbar">
+      <input id="search" autocomplete="off" placeholder="Search ticker or company" aria-label="Search ticker or company">
+      <button id="manual-add" type="button">Add ticker</button>
+    </div>
+    <div class="quick" id="quick"></div>
 
-    <aside class="panel">
-      <div class="panel-head">
-        <h2>Custom Feed</h2>
-        <div class="count" id="selected-count">0 selected</div>
-      </div>
-      <div class="selected" id="selected">
-        <div class="msg">No companies selected.</div>
-      </div>
-      <div class="actions">
-        <button class="primary" id="generate" type="button" disabled>Generate link</button>
-        <button id="clear" type="button">Clear</button>
-      </div>
-      <div class="linkbox" id="linkbox" hidden>
-        <textarea id="subscribe-url" readonly aria-label="Subscription URL"></textarea>
-        <div class="actions">
-          <button class="primary" id="copy" type="button">Copy subscription link</button>
-          <a class="btn" id="download" href="#">Download .ics</a>
+    <div class="chooser">
+      <section class="available" aria-label="Available companies">
+        <div class="list-head">
+          <h3>Available</h3>
+          <div class="count" id="available-count">0</div>
         </div>
-      </div>
-    </aside>
+        <div class="list" id="available"></div>
+        <div class="pager">
+          <span id="page-label">Page 1</span>
+          <button id="prev" type="button">Previous</button>
+          <button id="next" type="button">Next</button>
+        </div>
+      </section>
+
+      <section class="picked" aria-label="Selected companies">
+        <div class="list-head">
+          <h3>Selected</h3>
+          <div class="count" id="selected-count">0</div>
+        </div>
+        <div class="picked-list" id="selected"></div>
+        <div class="actions">
+          <button class="primary" id="generate" type="button" disabled>Generate link</button>
+          <button id="clear" type="button">Clear</button>
+        </div>
+        <div class="linkbox" id="linkbox" hidden>
+          <textarea id="subscribe-url" readonly aria-label="Subscription URL"></textarea>
+          <div class="actions">
+            <button class="primary" id="copy" type="button">Copy subscription link</button>
+            <a class="btn" id="download" href="#">Download .ics</a>
+          </div>
+        </div>
+      </section>
+    </div>
   </section>
 </main>
 
 <script>
-  const searchInput = document.querySelector("#search");
-  const resultsEl = document.querySelector("#results");
-  const resultCountEl = document.querySelector("#result-count");
-  const selectedEl = document.querySelector("#selected");
-  const selectedCountEl = document.querySelector("#selected-count");
-  const generateBtn = document.querySelector("#generate");
-  const clearBtn = document.querySelector("#clear");
-  const manualAddBtn = document.querySelector("#manual-add");
-  const linkbox = document.querySelector("#linkbox");
-  const subscribeUrl = document.querySelector("#subscribe-url");
-  const downloadLink = document.querySelector("#download");
-  const copyBtn = document.querySelector("#copy");
-  const statusEl = document.querySelector("#status");
-  const selected = new Map();
-  let searchTimer = 0;
+  const STORAGE_KEY = "calendarx.custom.selected.v1";
+  const pageSize = 12;
+  const state = {
+    results: [],
+    page: 0,
+    selected: new Map(),
+    presets: []
+  };
+
+  const els = {
+    status: document.querySelector("#status"),
+    search: document.querySelector("#search"),
+    manualAdd: document.querySelector("#manual-add"),
+    quick: document.querySelector("#quick"),
+    resultCount: document.querySelector("#result-count"),
+    availableCount: document.querySelector("#available-count"),
+    available: document.querySelector("#available"),
+    selectedCount: document.querySelector("#selected-count"),
+    selected: document.querySelector("#selected"),
+    prev: document.querySelector("#prev"),
+    next: document.querySelector("#next"),
+    pageLabel: document.querySelector("#page-label"),
+    generate: document.querySelector("#generate"),
+    clear: document.querySelector("#clear"),
+    linkbox: document.querySelector("#linkbox"),
+    subscribeUrl: document.querySelector("#subscribe-url"),
+    download: document.querySelector("#download"),
+    copy: document.querySelector("#copy")
+  };
+
+  function esc(value) {
+    return String(value || "").replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      "\"": "&quot;",
+      "'": "&#39;"
+    }[char]));
+  }
 
   function normalizeSymbol(value) {
     return value.trim().toUpperCase().replace(/[^A-Z0-9.-]/g, "");
   }
 
-  function setMessage(message, isError = false) {
-    resultsEl.innerHTML = `<div class="msg ${isError ? "error" : ""}">${message}</div>`;
-    resultCountEl.textContent = "0 results";
+  function saveSelected() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(state.selected.values())));
+  }
+
+  function loadSelected() {
+    try {
+      const rows = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      for (const row of rows) {
+        if (row && row.symbol) state.selected.set(row.symbol, row);
+      }
+    } catch {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  }
+
+  function recordFromSymbol(symbol) {
+    symbol = normalizeSymbol(symbol);
+    return symbol ? { symbol, companyName: symbol, hasEarnings: false } : null;
+  }
+
+  function addRecord(record) {
+    if (!record || !record.symbol) return;
+    const symbol = normalizeSymbol(record.symbol);
+    state.selected.set(symbol, {
+      symbol,
+      companyName: record.companyName || symbol,
+      date: record.date || "",
+      time: record.time || "",
+      hasEarnings: Boolean(record.hasEarnings)
+    });
+    els.linkbox.hidden = true;
+    saveSelected();
+    renderSelected();
+    renderAvailable();
+  }
+
+  function removeSymbol(symbol) {
+    state.selected.delete(symbol);
+    els.linkbox.hidden = true;
+    saveSelected();
+    renderSelected();
+    renderAvailable();
+  }
+
+  function renderAvailable() {
+    const total = state.results.length;
+    const pages = Math.max(1, Math.ceil(total / pageSize));
+    if (state.page >= pages) state.page = pages - 1;
+    const start = state.page * pageSize;
+    const rows = state.results.slice(start, start + pageSize);
+    els.resultCount.textContent = `${total} results`;
+    els.availableCount.textContent = `${total}`;
+    els.pageLabel.textContent = `${state.page + 1} / ${pages}`;
+    els.prev.disabled = state.page === 0;
+    els.next.disabled = state.page >= pages - 1;
+    els.available.innerHTML = "";
+    if (!rows.length) {
+      els.available.innerHTML = `<div class="empty">No matches.</div>`;
+      return;
+    }
+    for (const row of rows) {
+      const checked = state.selected.has(row.symbol);
+      const item = document.createElement("label");
+      item.className = "row";
+      item.innerHTML = `
+        <input class="check" type="checkbox" ${checked ? "checked" : ""} aria-label="Select ${esc(row.symbol)}">
+        <div>
+          <div class="symbol">${esc(row.symbol)}</div>
+          <div class="company">${esc(row.companyName || row.symbol)}</div>
+          <div class="date">${row.hasEarnings ? `${esc(row.date)}${row.time ? " · " + esc(row.time) : ""}` : "No current event in window"}</div>
+        </div>
+      `;
+      item.querySelector("input").addEventListener("change", (event) => {
+        if (event.target.checked) addRecord(row);
+        else removeSymbol(row.symbol);
+      });
+      els.available.appendChild(item);
+    }
   }
 
   function renderSelected() {
-    selectedEl.innerHTML = "";
-    const symbols = Array.from(selected.keys()).sort();
-    if (!symbols.length) {
-      selectedEl.innerHTML = `<div class="msg">No companies selected.</div>`;
-    } else {
-      for (const symbol of symbols) {
-        const chip = document.createElement("span");
-        chip.className = "chip";
-        chip.innerHTML = `<span>${symbol}</span><button type="button" aria-label="Remove ${symbol}">x</button>`;
-        chip.querySelector("button").addEventListener("click", () => {
-          selected.delete(symbol);
-          linkbox.hidden = true;
-          renderSelected();
-        });
-        selectedEl.appendChild(chip);
-      }
-    }
-    selectedCountEl.textContent = `${symbols.length} selected`;
-    generateBtn.disabled = symbols.length === 0;
-  }
-
-  function addSymbol(symbol, label = "") {
-    symbol = normalizeSymbol(symbol);
-    if (!symbol) return;
-    selected.set(symbol, label || symbol);
-    linkbox.hidden = true;
-    renderSelected();
-  }
-
-  async function search(q) {
-    q = q.trim();
-    if (!q) {
-      setMessage("Type a symbol or company name.");
+    const rows = Array.from(state.selected.values()).sort((a, b) => a.symbol.localeCompare(b.symbol));
+    els.selectedCount.textContent = `${rows.length}`;
+    els.generate.disabled = rows.length === 0;
+    els.selected.innerHTML = "";
+    if (!rows.length) {
+      els.selected.innerHTML = `<div class="empty">No companies selected.</div>`;
       return;
     }
-    resultsEl.innerHTML = `<div class="msg">Searching...</div>`;
-    try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}&limit=30`);
-      if (!res.ok) throw new Error(await res.text());
-      const data = await res.json();
-      const results = data.results || [];
-      resultCountEl.textContent = `${results.length} results`;
-      statusEl.innerHTML = `<b>${data.meta.anchor}</b> window · ${data.meta.saved || 0} refreshed · ${data.meta.kept || 0} kept`;
-      resultsEl.innerHTML = "";
-      if (!results.length) {
-        setMessage("No current-window match. Use Add ticker for any valid symbol.");
-        return;
-      }
-      for (const item of results) {
-        const row = document.createElement("div");
-        row.className = "result";
-        row.innerHTML = `
-          <div>
-            <div class="symbol">${item.symbol}</div>
-            <div class="company">${item.companyName || item.symbol}</div>
-            <div class="date">${item.date}${item.time ? " · " + item.time : ""}</div>
-          </div>
-          <button type="button">Add</button>
-        `;
-        row.querySelector("button").addEventListener("click", () => addSymbol(item.symbol, item.companyName));
-        resultsEl.appendChild(row);
-      }
-    } catch (err) {
-      setMessage(err.message || "Search failed.", true);
+    for (const row of rows) {
+      const item = document.createElement("div");
+      item.className = "picked-row";
+      item.innerHTML = `
+        <div>
+          <div class="symbol">${esc(row.symbol)}</div>
+          <div class="company">${esc(row.companyName || row.symbol)}</div>
+          <div class="date">${row.hasEarnings ? `${esc(row.date)}${row.time ? " · " + esc(row.time) : ""}` : "Waiting for next event"}</div>
+        </div>
+        <button class="remove" type="button" aria-label="Remove ${esc(row.symbol)}">x</button>
+      `;
+      item.querySelector("button").addEventListener("click", () => removeSymbol(row.symbol));
+      els.selected.appendChild(item);
+    }
+  }
+
+  async function loadSearch(query = "") {
+    const res = await fetch(`/api/search?q=${encodeURIComponent(query)}&limit=200`);
+    if (!res.ok) throw new Error(await res.text());
+    const data = await res.json();
+    state.results = data.results || [];
+    state.page = 0;
+    if (data.meta) {
+      els.status.innerHTML = `<b>${data.meta.anchor}</b> window · ${data.meta.saved || 0} refreshed · ${data.meta.kept || 0} kept`;
+    }
+    renderAvailable();
+  }
+
+  async function loadPresets() {
+    const res = await fetch("/api/presets");
+    if (!res.ok) throw new Error(await res.text());
+    const data = await res.json();
+    state.presets = data.presets || [];
+    els.quick.innerHTML = "";
+    for (const preset of state.presets) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = preset.label;
+      button.addEventListener("click", () => {
+        for (const symbol of preset.symbols || []) {
+          const record = state.results.find((row) => row.symbol === symbol) || recordFromSymbol(symbol);
+          addRecord(record);
+        }
+      });
+      els.quick.appendChild(button);
     }
   }
 
   async function generate() {
-    const symbols = Array.from(selected.keys()).sort();
+    const symbols = Array.from(state.selected.keys()).sort();
     if (!symbols.length) return;
-    generateBtn.disabled = true;
-    generateBtn.textContent = "Generating...";
+    els.generate.disabled = true;
+    els.generate.textContent = "Generating...";
     try {
       const res = await fetch("/api/link", {
         method: "POST",
@@ -382,53 +553,56 @@
       });
       if (!res.ok) throw new Error(await res.text());
       const data = await res.json();
-      subscribeUrl.value = data.subscribeUrl;
-      downloadLink.href = data.downloadUrl;
-      linkbox.hidden = false;
+      els.subscribeUrl.value = data.subscribeUrl;
+      els.download.href = data.downloadUrl;
+      els.linkbox.hidden = false;
     } catch (err) {
-      subscribeUrl.value = err.message || "Failed to generate link.";
-      linkbox.hidden = false;
+      els.subscribeUrl.value = err.message || "Failed to generate link.";
+      els.linkbox.hidden = false;
     } finally {
-      generateBtn.textContent = "Generate link";
-      generateBtn.disabled = symbols.length === 0;
+      els.generate.textContent = "Generate link";
+      els.generate.disabled = symbols.length === 0;
     }
   }
 
-  searchInput.addEventListener("input", () => {
-    window.clearTimeout(searchTimer);
-    searchTimer = window.setTimeout(() => search(searchInput.value), 240);
+  let timer = 0;
+  els.search.addEventListener("input", () => {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => {
+      loadSearch(els.search.value).catch((err) => {
+        els.available.innerHTML = `<div class="empty error">${esc(err.message)}</div>`;
+      });
+    }, 240);
   });
-  searchInput.addEventListener("keydown", (event) => {
+  els.search.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      addSymbol(searchInput.value);
+      addRecord(recordFromSymbol(els.search.value));
     }
   });
-  manualAddBtn.addEventListener("click", () => addSymbol(searchInput.value));
-  generateBtn.addEventListener("click", generate);
-  clearBtn.addEventListener("click", () => {
-    selected.clear();
-    linkbox.hidden = true;
+  els.manualAdd.addEventListener("click", () => addRecord(recordFromSymbol(els.search.value)));
+  els.prev.addEventListener("click", () => { state.page -= 1; renderAvailable(); });
+  els.next.addEventListener("click", () => { state.page += 1; renderAvailable(); });
+  els.generate.addEventListener("click", generate);
+  els.clear.addEventListener("click", () => {
+    state.selected.clear();
+    els.linkbox.hidden = true;
+    saveSelected();
     renderSelected();
+    renderAvailable();
   });
-  copyBtn.addEventListener("click", async () => {
-    await navigator.clipboard.writeText(subscribeUrl.value);
-    const old = copyBtn.textContent;
-    copyBtn.textContent = "Copied";
-    window.setTimeout(() => { copyBtn.textContent = old; }, 1200);
+  els.copy.addEventListener("click", async () => {
+    await navigator.clipboard.writeText(els.subscribeUrl.value);
+    const old = els.copy.textContent;
+    els.copy.textContent = "Copied";
+    window.setTimeout(() => { els.copy.textContent = old; }, 1200);
   });
 
+  loadSelected();
   renderSelected();
-  fetch("/api/health")
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.ok) {
-        statusEl.innerHTML = `<b>${data.events}</b> current events · window ${data.meta.anchor}`;
-      } else {
-        statusEl.textContent = "Runtime data is warming up.";
-      }
-    })
-    .catch(() => { statusEl.textContent = "Runtime data is warming up."; });
+  Promise.all([loadPresets(), loadSearch("")]).catch((err) => {
+    els.status.innerHTML = `<span class="error">${esc(err.message)}</span>`;
+  });
 </script>
 </body>
 </html>

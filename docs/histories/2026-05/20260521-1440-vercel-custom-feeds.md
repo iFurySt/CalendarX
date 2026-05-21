@@ -13,6 +13,8 @@ Build a Vercel-hosted custom CalendarX feed generator using gzip + base64url enc
 - Added runtime Nasdaq cache support in `pkg/runtimecache`, using `/tmp` as ephemeral storage.
 - Moved reusable Go packages from `internal/` to `pkg/` so Vercel functions can import them.
 - Added tests for config token handling, filtering, and runtime search.
+- Changed search to use a company universe from committed watchlists plus current-window Nasdaq rows, so selectable companies are not limited to only companies with an event in the current window.
+- Reworked the UI into side-by-side available and selected lists with preset buttons, pagination, and `localStorage` persistence.
 
 ## Design Intent
 
@@ -27,4 +29,5 @@ The custom feed link is stateless: the selected symbols are encoded inside the U
 - `api/health/index.go`
 - `pkg/custom/`
 - `pkg/runtimecache/`
+- `pkg/company/`
 - `vercel.json`

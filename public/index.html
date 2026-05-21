@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CalendarX Custom</title>
+<meta name="description" content="Create custom earnings calendar subscription links.">
+<style>
+  :root {
+    --ivory: #FAF9F5;
+    --paper: #FFFFFF;
+    --slate: #141413;
+    --clay: #D97757;
+    --clay-d: #B85C3E;
+    --oat: #E3DACC;
+    --olive: #788C5D;
+    --g100: #F0EEE6;
+    --g200: #E6E3DA;
+    --g300: #D1CFC5;
+    --g500: #87867F;
+    --g700: #3D3D3A;
+    --serif: ui-serif, Georgia, "Times New Roman", Times, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ivory);
+    color: var(--slate);
+    font-family: var(--sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 48px 32px 72px; }
+  header {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 40px;
+    align-items: end;
+    padding-bottom: 32px;
+    border-bottom: 1.5px solid var(--g300);
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--g500);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .eyebrow::before { content: ""; width: 24px; height: 1.5px; background: var(--clay); }
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(38px, 5vw, 62px);
+    font-weight: 500;
+    line-height: 1.06;
+    letter-spacing: 0;
+    margin: 0;
+    max-width: 14ch;
+  }
+  h1 em { color: var(--clay); font-style: italic; }
+  .status {
+    background: var(--paper);
+    border: 1.5px solid var(--g300);
+    border-radius: 8px;
+    padding: 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--g700);
+  }
+  .status b { color: var(--slate); font-weight: 600; }
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr);
+    gap: 24px;
+    margin-top: 28px;
+    align-items: start;
+  }
+  .panel {
+    background: var(--paper);
+    border: 1.5px solid var(--g300);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .panel-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 16px 12px;
+    border-bottom: 1.5px solid var(--g100);
+  }
+  .panel-head h2 {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0;
+    letter-spacing: 0;
+  }
+  .count {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--g500);
+    border: 1.5px solid var(--g200);
+    border-radius: 999px;
+    padding: 2px 8px;
+  }
+  .searchbar {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    padding: 16px;
+    border-bottom: 1.5px solid var(--g100);
+  }
+  input, textarea {
+    width: 100%;
+    border: 1.5px solid var(--g300);
+    border-radius: 8px;
+    background: var(--ivory);
+    color: var(--slate);
+    font: inherit;
+    padding: 10px 12px;
+  }
+  input:focus, textarea:focus {
+    outline: 2px solid rgba(217, 119, 87, .28);
+    border-color: var(--clay);
+  }
+  button, .btn {
+    border: 1.5px solid var(--g300);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--slate);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 12px;
+    min-height: 38px;
+    padding: 8px 14px;
+    text-decoration: none;
+  }
+  button:hover, .btn:hover { border-color: var(--slate); }
+  button.primary, .btn.primary {
+    background: var(--slate);
+    border-color: var(--slate);
+    color: var(--ivory);
+  }
+  button.primary:disabled {
+    background: var(--g300);
+    border-color: var(--g300);
+    color: var(--g700);
+    cursor: not-allowed;
+  }
+  .results { padding: 8px; display: grid; gap: 8px; min-height: 240px; }
+  .result {
+    border: 1.5px solid var(--g200);
+    border-radius: 8px;
+    padding: 11px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: center;
+  }
+  .symbol {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .02em;
+  }
+  .company { color: var(--g700); font-size: 13px; margin-top: 2px; }
+  .date { font-family: var(--mono); color: var(--g500); font-size: 11px; margin-top: 5px; }
+  .selected { padding: 14px; display: flex; flex-wrap: wrap; gap: 8px; min-height: 112px; }
+  .chip {
+    border: 1.5px solid var(--g300);
+    border-radius: 999px;
+    background: var(--g100);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 7px 10px;
+  }
+  .chip button {
+    min-height: 22px;
+    min-width: 22px;
+    padding: 0;
+    border-radius: 50%;
+    border-color: var(--g300);
+  }
+  .actions {
+    padding: 14px 16px 16px;
+    border-top: 1.5px solid var(--g100);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .linkbox {
+    border-top: 1.5px solid var(--g100);
+    padding: 14px 16px 16px;
+    display: grid;
+    gap: 10px;
+  }
+  .linkbox[hidden] { display: none; }
+  textarea {
+    min-height: 92px;
+    resize: vertical;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .msg {
+    color: var(--g500);
+    font-size: 13px;
+    padding: 16px;
+  }
+  .error { color: var(--clay-d); }
+  @media (max-width: 860px) {
+    .wrap { padding: 32px 20px 56px; }
+    header, .layout { grid-template-columns: 1fr; }
+    .searchbar { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">CalendarX Custom</div>
+      <h1>Build a live <em>earnings feed</em></h1>
+    </div>
+    <div class="status" id="status">Loading current earnings window...</div>
+  </header>
+
+  <section class="layout">
+    <article class="panel">
+      <div class="panel-head">
+        <h2>Companies</h2>
+        <div class="count" id="result-count">0 results</div>
+      </div>
+      <div class="searchbar">
+        <input id="search" autocomplete="off" placeholder="Search ticker or company" aria-label="Search ticker or company">
+        <button id="manual-add" type="button">Add ticker</button>
+      </div>
+      <div class="results" id="results">
+        <div class="msg">Type a symbol or company name.</div>
+      </div>
+    </article>
+
+    <aside class="panel">
+      <div class="panel-head">
+        <h2>Custom Feed</h2>
+        <div class="count" id="selected-count">0 selected</div>
+      </div>
+      <div class="selected" id="selected">
+        <div class="msg">No companies selected.</div>
+      </div>
+      <div class="actions">
+        <button class="primary" id="generate" type="button" disabled>Generate link</button>
+        <button id="clear" type="button">Clear</button>
+      </div>
+      <div class="linkbox" id="linkbox" hidden>
+        <textarea id="subscribe-url" readonly aria-label="Subscription URL"></textarea>
+        <div class="actions">
+          <button class="primary" id="copy" type="button">Copy subscription link</button>
+          <a class="btn" id="download" href="#">Download .ics</a>
+        </div>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<script>
+  const searchInput = document.querySelector("#search");
+  const resultsEl = document.querySelector("#results");
+  const resultCountEl = document.querySelector("#result-count");
+  const selectedEl = document.querySelector("#selected");
+  const selectedCountEl = document.querySelector("#selected-count");
+  const generateBtn = document.querySelector("#generate");
+  const clearBtn = document.querySelector("#clear");
+  const manualAddBtn = document.querySelector("#manual-add");
+  const linkbox = document.querySelector("#linkbox");
+  const subscribeUrl = document.querySelector("#subscribe-url");
+  const downloadLink = document.querySelector("#download");
+  const copyBtn = document.querySelector("#copy");
+  const statusEl = document.querySelector("#status");
+  const selected = new Map();
+  let searchTimer = 0;
+
+  function normalizeSymbol(value) {
+    return value.trim().toUpperCase().replace(/[^A-Z0-9.-]/g, "");
+  }
+
+  function setMessage(message, isError = false) {
+    resultsEl.innerHTML = `<div class="msg ${isError ? "error" : ""}">${message}</div>`;
+    resultCountEl.textContent = "0 results";
+  }
+
+  function renderSelected() {
+    selectedEl.innerHTML = "";
+    const symbols = Array.from(selected.keys()).sort();
+    if (!symbols.length) {
+      selectedEl.innerHTML = `<div class="msg">No companies selected.</div>`;
+    } else {
+      for (const symbol of symbols) {
+        const chip = document.createElement("span");
+        chip.className = "chip";
+        chip.innerHTML = `<span>${symbol}</span><button type="button" aria-label="Remove ${symbol}">x</button>`;
+        chip.querySelector("button").addEventListener("click", () => {
+          selected.delete(symbol);
+          linkbox.hidden = true;
+          renderSelected();
+        });
+        selectedEl.appendChild(chip);
+      }
+    }
+    selectedCountEl.textContent = `${symbols.length} selected`;
+    generateBtn.disabled = symbols.length === 0;
+  }
+
+  function addSymbol(symbol, label = "") {
+    symbol = normalizeSymbol(symbol);
+    if (!symbol) return;
+    selected.set(symbol, label || symbol);
+    linkbox.hidden = true;
+    renderSelected();
+  }
+
+  async function search(q) {
+    q = q.trim();
+    if (!q) {
+      setMessage("Type a symbol or company name.");
+      return;
+    }
+    resultsEl.innerHTML = `<div class="msg">Searching...</div>`;
+    try {
+      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}&limit=30`);
+      if (!res.ok) throw new Error(await res.text());
+      const data = await res.json();
+      const results = data.results || [];
+      resultCountEl.textContent = `${results.length} results`;
+      statusEl.innerHTML = `<b>${data.meta.anchor}</b> window · ${data.meta.saved || 0} refreshed · ${data.meta.kept || 0} kept`;
+      resultsEl.innerHTML = "";
+      if (!results.length) {
+        setMessage("No current-window match. Use Add ticker for any valid symbol.");
+        return;
+      }
+      for (const item of results) {
+        const row = document.createElement("div");
+        row.className = "result";
+        row.innerHTML = `
+          <div>
+            <div class="symbol">${item.symbol}</div>
+            <div class="company">${item.companyName || item.symbol}</div>
+            <div class="date">${item.date}${item.time ? " · " + item.time : ""}</div>
+          </div>
+          <button type="button">Add</button>
+        `;
+        row.querySelector("button").addEventListener("click", () => addSymbol(item.symbol, item.companyName));
+        resultsEl.appendChild(row);
+      }
+    } catch (err) {
+      setMessage(err.message || "Search failed.", true);
+    }
+  }
+
+  async function generate() {
+    const symbols = Array.from(selected.keys()).sort();
+    if (!symbols.length) return;
+    generateBtn.disabled = true;
+    generateBtn.textContent = "Generating...";
+    try {
+      const res = await fetch("/api/link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ symbols })
+      });
+      if (!res.ok) throw new Error(await res.text());
+      const data = await res.json();
+      subscribeUrl.value = data.subscribeUrl;
+      downloadLink.href = data.downloadUrl;
+      linkbox.hidden = false;
+    } catch (err) {
+      subscribeUrl.value = err.message || "Failed to generate link.";
+      linkbox.hidden = false;
+    } finally {
+      generateBtn.textContent = "Generate link";
+      generateBtn.disabled = symbols.length === 0;
+    }
+  }
+
+  searchInput.addEventListener("input", () => {
+    window.clearTimeout(searchTimer);
+    searchTimer = window.setTimeout(() => search(searchInput.value), 240);
+  });
+  searchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      addSymbol(searchInput.value);
+    }
+  });
+  manualAddBtn.addEventListener("click", () => addSymbol(searchInput.value));
+  generateBtn.addEventListener("click", generate);
+  clearBtn.addEventListener("click", () => {
+    selected.clear();
+    linkbox.hidden = true;
+    renderSelected();
+  });
+  copyBtn.addEventListener("click", async () => {
+    await navigator.clipboard.writeText(subscribeUrl.value);
+    const old = copyBtn.textContent;
+    copyBtn.textContent = "Copied";
+    window.setTimeout(() => { copyBtn.textContent = old; }, 1200);
+  });
+
+  renderSelected();
+  fetch("/api/health")
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.ok) {
+        statusEl.innerHTML = `<b>${data.events}</b> current events · window ${data.meta.anchor}`;
+      } else {
+        statusEl.textContent = "Runtime data is warming up.";
+      }
+    })
+    .catch(() => { statusEl.textContent = "Runtime data is warming up."; });
+</script>
+</body>
+</html>

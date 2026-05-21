@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/api/ics/c/:token.ics",
+      "destination": "/api/ics?c=:token"
+    },
+    {
+      "source": "/api/download/c/:token.ics",
+      "destination": "/api/ics?c=:token&download=1"
+    }
+  ]
+}

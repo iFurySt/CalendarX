@@ -25,6 +25,7 @@ make ci
 go run ./cmd/calendarx fetch
 go run ./cmd/calendarx generate
 go run ./cmd/calendarx build
+vercel dev --listen 4174 --yes
 ```
 
 ## Generated Artifacts
@@ -33,6 +34,24 @@ go run ./cmd/calendarx build
 - `docs/ics/*.ics`: generated feed files for Pages.
 - `docs/index.html`: generated feed directory page.
 
+## Vercel
+
+The Vercel app serves custom feeds from:
+
+- `public/index.html`
+- `api/search/index.go`
+- `api/link/index.go`
+- `api/ics/index.go`
+- `api/health/index.go`
+
+Deploy with:
+
+```sh
+vercel deploy --prod
+```
+
+The project is linked locally as `calendarx`; `.vercel/` is ignored and should not be committed.
+
 ## Release Posture
 
-CalendarX currently ships static Pages artifacts only. Add SBOM, provenance, and binary release automation once there is a packaged CLI release target.
+CalendarX currently ships static Pages artifacts and Vercel serverless functions. Add SBOM, provenance, and binary release automation once there is a packaged CLI release target.

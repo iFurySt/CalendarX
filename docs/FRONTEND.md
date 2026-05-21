@@ -1,24 +1,30 @@
 # Frontend Guide
 
-CalendarX's current frontend is a generated static page at `docs/index.html`.
+CalendarX has two frontend surfaces:
+
+- `docs/index.html`: generated GitHub Pages directory for preset feeds.
+- `public/index.html`: Vercel custom feed builder.
 
 ## Local Workflow
 
 ```sh
 go run ./cmd/calendarx generate
 open docs/index.html
+vercel dev --listen 4174 --yes
 ```
 
-No dev server is required. The page uses relative `ics/*.ics` links so it works both from the filesystem and from GitHub Pages.
+No dev server is required for the GitHub Pages output. The Vercel custom UI should be checked through `vercel dev` so the Go API routes and rewrites are active.
 
 ## Style
 
-The page follows the editorial static HTML direction from `html-effectiveness`: ivory background, serif headings, compact cards, restrained borders, and a small sticky summary toolbar.
+Both pages follow the editorial static HTML direction from `html-effectiveness`: ivory background, serif headings, compact cards, restrained borders, and small operational status surfaces.
 
-Keep the UI focused on the actual feed list. Avoid marketing-only sections; the first screen should expose the available calendar feeds and their subscribe/download actions.
+Keep the UI focused on the actual feed workflow. Avoid marketing-only sections; the first screen should expose available feeds or the custom feed builder.
 
 ## Verification
 
 - Confirm every public feed card has a copy action and a download link.
 - Confirm text wraps cleanly on narrow mobile widths.
 - Confirm `docs/index.html` uses relative links to `docs/ics/*.ics`.
+- Confirm the Vercel UI can search, add a symbol, generate a compressed subscription URL, and download `.ics`.
+- Confirm `/api/ics/c/<token>.ics` returns `text/calendar`.

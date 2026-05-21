@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/iFurySt/CalendarX/internal/calendarx"
+	"github.com/iFurySt/CalendarX/pkg/calendarx"
 )
 
 const NasdaqURL = "https://api.nasdaq.com/api/calendar/earnings"
@@ -60,9 +60,9 @@ func FetchWindow(ctx context.Context, opts FetchOptions) (FetchResult, error) {
 	var result FetchResult
 	var firstErr error
 	for _, date := range dates {
-		day, err := fetchOneDay(ctx, client, date)
+		day, err := FetchOneDay(ctx, client, date)
 		if err == nil {
-			if err := writeDay(opts.DataDir, date, day); err != nil {
+			if err := WriteDay(opts.DataDir, date, day); err != nil {
 				return result, err
 			}
 			result.Saved++
@@ -93,7 +93,7 @@ func FetchWindow(ctx context.Context, opts FetchOptions) (FetchResult, error) {
 	return result, nil
 }
 
-func fetchOneDay(ctx context.Context, client *http.Client, isoDate string) (calendarx.NasdaqDay, error) {
+func FetchOneDay(ctx context.Context, client *http.Client, isoDate string) (calendarx.NasdaqDay, error) {
 	var lastErr error
 	for attempt := 1; attempt <= 3; attempt++ {
 		day, err := requestDay(ctx, client, isoDate)
@@ -147,7 +147,7 @@ func requestDay(ctx context.Context, client *http.Client, isoDate string) (calen
 	return day, nil
 }
 
-func writeDay(dataDir string, isoDate string, day calendarx.NasdaqDay) error {
+func WriteDay(dataDir string, isoDate string, day calendarx.NasdaqDay) error {
 	path := calendarx.EarningsCacheFile(dataDir, isoDate)
 	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
 		return err

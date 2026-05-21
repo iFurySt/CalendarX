@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/iFurySt/CalendarX/internal/calendarx"
-	"github.com/iFurySt/CalendarX/internal/earnings"
-	"github.com/iFurySt/CalendarX/internal/site"
-	"github.com/iFurySt/CalendarX/internal/watchlist"
+	"github.com/iFurySt/CalendarX/pkg/calendarx"
+	"github.com/iFurySt/CalendarX/pkg/earnings"
+	"github.com/iFurySt/CalendarX/pkg/site"
+	"github.com/iFurySt/CalendarX/pkg/watchlist"
 	"github.com/spf13/cobra"
 )
 

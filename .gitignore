@@ -49,3 +49,4 @@ venv/
 
 # CalendarX runtime cache
 data/earnings/
+.vercel

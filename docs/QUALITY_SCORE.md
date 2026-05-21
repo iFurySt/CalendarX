@@ -13,8 +13,8 @@ Track quality by product area and architectural layer so agents can prioritize t
 
 | Area | Score | Why | Next Step |
 | --- | --- | --- | --- |
-| Product surface | C | First earnings calendar feeds and static Pages directory are defined. | Add IPO and event calendar families after the earnings path is stable. |
-| Architecture docs | B | Go/Cobra generator boundaries and Pages data flow are documented. | Document new source packages as they are added. |
-| Testing | C | Unit tests cover date range, ICS output, and earnings processing; `make ci` is available. | Add fixture-based end-to-end generation tests. |
-| Observability | C | CLI logs fetch and generation counts in local and CI runs. | Add generated manifest metadata for last source fetch and per-feed cache freshness. |
-| Security | C | No secrets are required; workflow actions are pinned and Nasdaq cache stays out of git. | Add dependency scanning and release provenance when binary releases exist. |
+| Product surface | B | Preset GitHub Pages feeds and a Vercel custom feed builder are available. | Add IPO and event calendar families after the earnings path is stable. |
+| Architecture docs | B | Go/Cobra, Pages, Vercel API, and stateless custom token flows are documented. | Document new source packages as they are added. |
+| Testing | C | Unit tests cover date range, ICS output, earnings processing, token encoding, filtering, and runtime search; `make ci` is available. | Add fixture-based end-to-end generation and API handler tests. |
+| Observability | C | CLI logs counts and Vercel exposes `/api/health` with cache metadata. | Add generated manifest metadata for last source fetch and per-feed cache freshness. |
+| Security | C | No secrets are required; workflow actions are pinned, Vercel configs are stateless, and Nasdaq cache stays out of git. | Add dependency scanning and release provenance when binary releases exist. |

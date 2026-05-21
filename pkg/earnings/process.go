@@ -6,8 +6,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/iFurySt/CalendarX/internal/calendarx"
-	"github.com/iFurySt/CalendarX/internal/watchlist"
+	"github.com/iFurySt/CalendarX/pkg/calendarx"
+	"github.com/iFurySt/CalendarX/pkg/watchlist"
 )
 
 type ProcessOptions struct {

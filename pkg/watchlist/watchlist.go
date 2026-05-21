@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/iFurySt/CalendarX/internal/calendarx"
+	"github.com/iFurySt/CalendarX/pkg/calendarx"
 )
 
 func Load(path string) ([]calendarx.WatchlistEntry, error) {

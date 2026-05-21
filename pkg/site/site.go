@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/iFurySt/CalendarX/internal/calendarx"
+	"github.com/iFurySt/CalendarX/pkg/calendarx"
 )
 
 type Page struct {

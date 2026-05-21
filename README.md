@@ -10,7 +10,7 @@ The first product slice is a Nasdaq-backed earnings calendar generator for commo
 - Dow 30
 - All companies returned by the Nasdaq earnings calendar window
 
-Generated output lives under `docs/` so GitHub Pages can publish it directly.
+Generated preset output lives under `docs/` so GitHub Pages can publish it directly. A separate Vercel surface serves custom, self-contained subscription links.
 
 ## Data Source
 
@@ -48,6 +48,30 @@ Useful flags:
 go run ./cmd/calendarx build --anchor 2026-05-21 --before 1 --after 45
 go run ./cmd/calendarx generate --data-dir data --out-dir docs
 ```
+
+## Vercel Custom Feeds
+
+The Vercel app serves a SaaS-style custom feed builder from `public/index.html`.
+
+It exposes:
+
+```text
+GET  /api/search?q=NVDA
+POST /api/link
+GET  /api/ics/c/<compressed-config>.ics
+GET  /api/download/c/<compressed-config>.ics
+GET  /api/health
+```
+
+Custom links are stateless. The selected symbols are encoded as normalized JSON, compressed with gzip, then encoded with raw base64url. Vercel does not store user selections in a database.
+
+Run it locally with:
+
+```sh
+vercel dev --listen 4174 --yes
+```
+
+Then open `http://localhost:4174/`.
 
 ## CI And Pages
 

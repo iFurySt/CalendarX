@@ -13,8 +13,8 @@ Track quality by product area and architectural layer so agents can prioritize t
 
 | Area | Score | Why | Next Step |
 | --- | --- | --- | --- |
-| Product surface | D | Not yet defined. | Define the first user journey and acceptance criteria. |
-| Architecture docs | C | Base scaffold exists but needs project-specific content. | Fill in `docs/ARCHITECTURE.md`. |
-| Testing | D | No stack-specific tests yet. | Add a minimal smoke path with one real command. |
-| Observability | D | No local stack or conventions yet. | Document logs, metrics, traces, local access, and future pipeline access. |
-| Security | C | Defaults are documented, implementation is pending. | Add real auth, secret, and dependency rules. |
+| Product surface | C | First earnings calendar feeds and static Pages directory are defined. | Add IPO and event calendar families after the earnings path is stable. |
+| Architecture docs | B | Go/Cobra generator boundaries and Pages data flow are documented. | Document new source packages as they are added. |
+| Testing | C | Unit tests cover date range, ICS output, and earnings processing; `make ci` is available. | Add fixture-based end-to-end generation tests. |
+| Observability | C | CLI logs fetch and generation counts in local and CI runs. | Add generated manifest metadata for last source fetch and per-feed cache freshness. |
+| Security | C | No secrets are required; workflow actions are pinned and Nasdaq cache stays out of git. | Add dependency scanning and release provenance when binary releases exist. |

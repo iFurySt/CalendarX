@@ -1,29 +1,38 @@
 # CI/CD Guide
 
-This template no longer ships default GitHub Actions CI/CD scaffolding.
+CalendarX uses GitHub Actions to validate the Go generator, refresh earnings data, generate calendar feeds, and deploy GitHub Pages.
 
-## Current State
+## Workflows
 
-- There are no default workflows under `.github/workflows/`.
-- The repository no longer provides `make ci`, `scripts/ci.sh`, or `scripts/release-package.sh`.
-- Add testing, build, scanning, release, and deployment workflows later when the real project stack is known.
+- `.github/workflows/pages.yml`: runs on a twice-daily schedule, manual dispatch, and relevant pushes to `main`.
 
-## Design Principle
+The workflow:
 
-CI/CD should serve the real project instead of preserving placeholder automation in the template.
+1. Checks out the repository.
+2. Sets up Go from `go.mod`.
+3. Runs `make ci`.
+4. Restores the `data/earnings/` Actions cache.
+5. Runs `go run ./cmd/calendarx build`.
+6. Uploads `docs/` as the Pages artifact.
+7. Deploys GitHub Pages.
 
-Once the stack is known, start with the smallest real validation path, then add build artifacts, supply-chain scanning, release, and deployment. Pin new GitHub Actions to commit SHAs instead of floating tags.
+All workflow actions are pinned to commit SHAs with the version tag noted in comments.
 
-## Recommended Customization Sequence
+## Local Commands
 
-1. Define the project's own local validation command.
-2. Add a minimal pull-request gate that runs real tests, lint, or smoke checks.
-3. Add packaging, SBOM, and provenance after a real deliverable exists.
-4. Add environment-specific deployment jobs after a real runtime and target environment exist.
-5. Document all pipeline entry points and release artifacts in this file.
+```sh
+make ci
+go run ./cmd/calendarx fetch
+go run ./cmd/calendarx generate
+go run ./cmd/calendarx build
+```
 
-## When Adding CI/CD Back
+## Generated Artifacts
 
-- Do not restore workflows that only package placeholder metadata.
-- Do not expose stale or unmaintained commands in `Makefile`.
-- If release automation is added, update `docs/SUPPLY_CHAIN_SECURITY.md` and `docs/releases/README.md` in the same change.
+- `data/earnings/`: runtime cache, ignored by git and restored through Actions cache.
+- `docs/ics/*.ics`: generated feed files for Pages.
+- `docs/index.html`: generated feed directory page.
+
+## Release Posture
+
+CalendarX currently ships static Pages artifacts only. Add SBOM, provenance, and binary release automation once there is a packaged CLI release target.

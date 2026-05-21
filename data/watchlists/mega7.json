@@ -1,0 +1,37 @@
+[
+  {
+    "symbol": "AAPL",
+    "companyName": "Apple",
+    "industry": "Information Technology"
+  },
+  {
+    "symbol": "MSFT",
+    "companyName": "Microsoft",
+    "industry": "Information Technology"
+  },
+  {
+    "symbol": "NVDA",
+    "companyName": "Nvidia",
+    "industry": "Information Technology"
+  },
+  {
+    "symbol": "AMZN",
+    "companyName": "Amazon",
+    "industry": "Consumer Discretionary"
+  },
+  {
+    "symbol": "GOOGL",
+    "companyName": "Alphabet Class A",
+    "industry": "Communication Services"
+  },
+  {
+    "symbol": "META",
+    "companyName": "Meta Platforms",
+    "industry": "Communication Services"
+  },
+  {
+    "symbol": "TSLA",
+    "companyName": "Tesla",
+    "industry": "Consumer Discretionary"
+  }
+]

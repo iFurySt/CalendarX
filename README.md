@@ -1,37 +1,60 @@
 # CalendarX
 
-中文版本：[`CalendarX-cn`](https://github.com/iFurySt/CalendarX-cn)
+CalendarX publishes generated calendar subscriptions for market events.
 
-## Intro
+The first product slice is a Nasdaq-backed earnings calendar generator for common US stock baskets:
 
-An agent-first base repo template for building any product you want.
+- Mega 7
+- Nasdaq-100
+- S&P 500
+- Dow 30
+- All companies returned by the Nasdaq earnings calendar window
 
-## Quick Start
+Generated output lives under `docs/` so GitHub Pages can publish it directly.
 
-Use GitHub's template flow from the top right of this repository:
+## Data Source
 
-1. Select **Use this template**.
-2. Select [**Create a new repository**](https://github.com/new?template_name=CalendarX&template_owner=iFurySt).
+Earnings dates come from Nasdaq's earnings calendar endpoint:
 
-Or initialize a new or existing repository with [`harness-cli`](https://github.com/iFurySt/harness-cli).
-Install it from npm first:
-
-```sh
-npm install -g @ifuryst/harness-cli
+```text
+https://api.nasdaq.com/api/calendar/earnings?date=YYYY-MM-DD
 ```
 
-Then run:
+`calendarx fetch` writes one normalized cache file per day into `data/earnings/`. The cache is ignored by git and preserved in CI with GitHub Actions cache.
+
+Watchlist membership for the first stock baskets is committed under `data/watchlists/`.
+
+## Local Usage
+
+Install Go 1.26 or newer, then run:
 
 ```sh
-harness-cli init --language en
+go test ./...
+go run ./cmd/calendarx fetch
+go run ./cmd/calendarx generate
 ```
 
-`harness-cli` requires Node.js 18+ and Go on your `PATH`.
+Or run the full local build:
 
-## License
+```sh
+go run ./cmd/calendarx build
+```
 
-[MIT](LICENSE)
+The generated page is `docs/index.html`; generated feeds are under `docs/ics/`.
 
-## Note
+Useful flags:
 
-This approach comes from our own exploration, while also drawing on some ideas from OpenAI's [harness engineering write-up](https://openai.com/index/harness-engineering/).
+```sh
+go run ./cmd/calendarx build --anchor 2026-05-21 --before 1 --after 45
+go run ./cmd/calendarx generate --data-dir data --out-dir docs
+```
+
+## CI And Pages
+
+`.github/workflows/pages.yml` runs tests, refreshes the Nasdaq earnings cache, generates `.ics` files and `docs/index.html`, then deploys `docs/` through GitHub Pages.
+
+The workflow runs twice daily at 04:34 and 16:34 UTC, on manual dispatch, and on relevant pushes to `main`.
+
+## Repository Guide
+
+Start with `AGENTS.md` and the docs under `docs/` before changing behavior. If code or workflow changes make docs stale, update them in the same task.
